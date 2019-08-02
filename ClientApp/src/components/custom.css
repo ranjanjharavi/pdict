@@ -1,0 +1,9 @@
+﻿.mt10 {
+  margin-top: 10%;
+}
+
+.input-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

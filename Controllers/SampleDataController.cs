@@ -1,32 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Diagnostics;
-using System.Linq.Expressions;
 
 namespace reactnet.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        public static List<Users> ls = new List<Users>();
-        private static string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
 
         [HttpPost("[action]")]
         public void PostData([FromForm]Users user)
         {
-            ls.Add(user);
-            
-            try{
-
+            try
+            {
                 using (SqlConnection connection = new SqlConnection(GetConnectionStringBuilder().ConnectionString))
                 {
                     connection.Open();
@@ -46,7 +36,7 @@ namespace reactnet.Controllers
                     connection.Close();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -69,15 +59,16 @@ namespace reactnet.Controllers
             }
             catch (System.Exception)
             {
-                
+
                 throw;
             }
-            
+
             var usersList = new List<Users>();
-            for(int i = 0; i < dataTable.Rows.Count; i++)
+            for (int i = 0; i < dataTable.Rows.Count; i++)
             {
-                var row  = dataTable.Rows[i];
-                var user = new Users(){
+                var row = dataTable.Rows[i];
+                var user = new Users()
+                {
                     firstname = Convert.ToString(row["firstname"]),
                     lastname = Convert.ToString(row["lastname"]),
                     age = Convert.ToString(row["age"]),
@@ -87,46 +78,19 @@ namespace reactnet.Controllers
                 usersList.Add(user);
             }
 
-            return usersList; 
+            return usersList;
         }
 
         private SqlConnectionStringBuilder GetConnectionStringBuilder()
         {
-                // Build connection string
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-                builder.DataSource = "localhost";   // update me
-                builder.UserID = "sa";              // update me
-                builder.Password = "raviranjanjha@01";      // update me
-                builder.InitialCatalog = "newdb";
+            // Build connection string
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.DataSource = "BLR-BMFX7Q2-D\\SQLSERVER";   // update me
+            builder.UserID = "sa";              // update me
+            builder.Password = "W3lc0m3";      // update me
+            builder.InitialCatalog = "FormReact";
 
-                return builder;
-        }
-
-        [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
-        }
-
-        public class WeatherForecast
-        {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
-
-            public int TemperatureF
-            {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
-            }
+            return builder;
         }
 
         public class Users

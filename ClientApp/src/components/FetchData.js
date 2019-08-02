@@ -1,52 +1,58 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 export class FetchData extends Component {
   static displayName = FetchData.name;
 
-  constructor (props) {
+  constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+    this.state = { users: [], loading: true };
 
-    fetch('api/SampleData/GetUsers')
+    fetch("api/SampleData/GetUsers")
       .then(response => response.json())
       .then(data => {
-        this.setState({ forecasts: data, loading: false });
+        this.setState({ users: data, loading: false });
       });
   }
 
-  static renderForecastsTable (forecasts) {
+  static renderUsersTable(users) {
     return (
-      <table className='table table-striped'>
+      <table className="table table-striped">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Password</th>
           </tr>
         </thead>
         <tbody>
-          {forecasts.map(forecast =>
-            <tr key={forecast.firstname}>
-              <td>{forecast.lastname}</td>
-              <td>{forecast.age}</td>
-              <td>{forecast.email}</td>
-              <td>{forecast.pwd}</td>
+          {users.map(users => (
+            <tr key={users.firstname}>
+              <td>{users.firstname}</td>
+              <td>{users.lastname}</td>
+              <td>{users.age}</td>
+              <td>{users.email}</td>
+              <td>{users.pwd}</td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
     );
   }
 
-  render () {
-    let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.forecasts);
+  render() {
+    let contents = this.state.loading ? (
+      <p>
+        <em>Loading...</em>
+      </p>
+    ) : (
+      FetchData.renderUsersTable(this.state.users)
+    );
 
     return (
       <div>
-        <h1>Weather forecast</h1>
+        <h1>Users Details</h1>
         <p>This component demonstrates fetching data from the server.</p>
         {contents}
       </div>
